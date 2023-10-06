@@ -332,7 +332,7 @@ Después de hacerlo se reiniciarán las máquinas con
 ```
 sudo reboot
 ```
-## Modificamo el fichero de configuración core-site.xml
+## Modificamo el archivo de configuración core-site.xml
 ```
 sudo nano /usr/local/hadoop/etc/hadoop/core-site.xml
 ```
@@ -346,3 +346,90 @@ En mi caso quedaría de la siguiente forma:
   </property>
 </configuration>
 ```
+## Modificamos el archivo de configuración hdfs-site.xml
+```
+sudo nano /usr/local/hadoop/etc/hadoop/hdfs-site.xml
+```
+Donde pone value pondremos el valor 2, quedaria de la siguiente forma:
+```xml
+ <configuration>
+<property>
+<name>dfs.namenode.name.dir</name><value>/usr/local/hadoop/data/nameNode</value>
+</property>
+<property>
+<name>dfs.datanode.data.dir</name><value>/usr/local/hadoop/data/dataNode</value>
+</property>
+<property>
+<name>dfs.replication</name>
+<value>2</value>
+</property>
+</configuration>
+```
+## Modificamos el archivo de configuracion workers
+```
+sudo nano /usr/local/hadoop/etc/hadoop/workers
+```
+Donde añadiremos el nombre de las máquinas virtuales, quedaria de la siguiente manera:
+```xml
+192.168.56.104
+192.168.56.103
+```
+## Copiamos la configuración del hadoop-master al esclavo
+```
+scp /usr/local/hadoop/etc/hadoop/* hadoop-slave1:/usr/local/hadoop/etc/hadoop/
+```
+Deberia salir por pantalla lo siguiente:
+> hadoop@hadoop-master:~$ scp /usr/local/hadoop/etc/hadoop/* hadoop-slave1:/usr/local/hadoop/etc/hadoop/
+capacity-scheduler.xml                        100% 9213     2.1MB/s   00:00    
+configuration.xsl                             100% 1335    98.2KB/s   00:00    
+container-executor.cfg                        100% 1940   743.6KB/s   00:00    
+core-site.xml                                 100%  864   382.0KB/s   00:00    
+hadoop-env.cmd                                100% 3999     1.4MB/s   00:00    
+hadoop-env.sh                                 100%   16KB   2.0MB/s   00:00    
+hadoop-metrics2.properties                    100% 3321     1.2MB/s   00:00    
+hadoop-policy.xml                             100%   11KB   3.2MB/s   00:00    
+hadoop-user-functions.sh.example              100% 3414   785.4KB/s   00:00    
+hdfs-site.xml                                 100% 1052   414.3KB/s   00:00    
+httpfs-env.sh                                 100% 1484   402.6KB/s   00:00    
+httpfs-log4j.properties                       100% 1657   501.5KB/s   00:00    
+httpfs-signature.secret                       100%   21     7.4KB/s   00:00    
+httpfs-site.xml                               100%  620   269.8KB/s   00:00    
+kms-acls.xml                                  100% 3518     1.3MB/s   00:00    
+kms-env.sh                                    100% 1351   182.9KB/s   00:00    
+kms-log4j.properties                          100% 1860   605.3KB/s   00:00    
+kms-site.xml                                  100%  682   254.0KB/s   00:00    
+log4j.properties                              100%   14KB   2.2MB/s   00:00    
+mapred-env.cmd                                100%  951   386.8KB/s   00:00    
+mapred-env.sh                                 100% 1764   461.1KB/s   00:00    
+mapred-queues.xml.template                    100% 4113   637.3KB/s   00:00    
+mapred-site.xml                               100%  862   361.4KB/s   00:00    
+scp: local "/usr/local/hadoop/etc/hadoop/shellprofile.d" is not a regular file
+scp: failed to upload file /usr/local/hadoop/etc/hadoop/shellprofile.d to /usr/local/hadoop/etc/hadoop/
+ssl-client.xml.example                        100% 2316   670.4KB/s   00:00    
+ssl-server.xml.example                        100% 2697   831.1KB/s   00:00    
+user_ec_policies.xml.template                 100% 2642   232.2KB/s   00:00    
+workers                                       100%   30    12.8KB/s   00:00    
+yarn-env.cmd                                  100% 2250   487.1KB/s   00:00    
+yarn-env.sh                                   100% 6272     1.6MB/s   00:00    
+yarnservice-log4j.properties                  100% 2591   746.5KB/s   00:00    
+yarn-site.xml 
+## Se formatea el archivo HDFS
+```
+source /etc/environment
+hdfs namenode -format
+```
+como el segundo comando no me funcionaba use el comando
+```
+source .bashrc
+```
+## Arrancamos el HDFS 
+```
+start-dfs.sh
+```
+Deberia mostrarse por pantalla lo siguiente:
+> Starting namenodes on [hadoop-master] 
+Starting datanodes  
+Starting secondary namenodes [hadoop-slave1]
+
+
+
