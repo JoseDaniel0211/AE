@@ -431,5 +431,20 @@ Deberia mostrarse por pantalla lo siguiente:
 Starting datanodes  
 Starting secondary namenodes [hadoop-slave1]
 
+```
+jps
+```
+> 5047 NameNode  
+5850 Jps  
+5326 SecondaryNameNode  
+5151 DataNode
 
+Salida en el esclavo al realizar el comando jps:
+> 4181 Jps
+5089 DataNode
 
+## Comprobar que se han arrancado los dos DataNode en la página web
+Buscamos lo siguiente en el buscador:
+```
+http://hadoop-master:9870
+```
