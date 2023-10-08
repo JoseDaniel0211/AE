@@ -448,3 +448,40 @@ Buscamos lo siguiente en el buscador:
 ```
 http://hadoop-master:9870
 ```
+# Subimos una imagen iso a HDFS
+## Creamos la carpeta datos
+Creamos el directorio datos en el cual posteriormente vamos a subir la imagen iso
+```
+hdfs dfs -mkdir /datos
+```
+Comprobamos que el directorio se ha creado con éxito con el comando:
+```
+hdfs dfs -ls /
+```
+## Descargamos la imagen iso de ubuntu
+```
+https://releases.ubuntu.com/lunar/
+```
+## Movemos la imagen iso de descargas a nuestro usuario de hadoop
+```
+sudo mv /home/josedaniel/Descargas/ubuntu.iso .
+```
+Comprobamos que la imagen se ha movido con éxito con el comando:
+```
+ls
+```
+Copiamos la imagen al directorio datos
+```
+hdfs dfs -copyFromLocal ubuntu.iso /datos 
+```
+Comprobamos que la imagen se ha copiado con éxito
+```
+hdfs dfs -ls /datos
+```
+# Cosas aprendidas acerca de esta entrega
+Los DataNodes son los nodos de almacenamiento en un clúster Hadoop HDFS.
+Almacenan los datos reales en forma de bloques y los sirven cuando se solicitan.
+Son responsables de informar regularmente al NameNode sobre su estado y los bloques que almacenan.
+Si un DataNode falla, el NameNode puede utilizar esta información para replicar los bloques de datos perdidos en otros DataNodes.
+No almacenan metadatos sobre el sistema de archivos, solo los bloques de datos.
+Puedes tener múltiples DataNodes en un clúster para escalar el almacenamiento y la redundancia de datos.
